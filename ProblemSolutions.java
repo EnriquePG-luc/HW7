@@ -1,6 +1,6 @@
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   ENRIQUE PRADO GUTIERREZ / 001
  *
  *   This java file contains the problem solutions for the methods selectionSort,
  *   mergeSortDivisibleByKFirst, asteroidsDestroyed, and numRescueCanoes methods.
@@ -38,9 +38,15 @@ public class ProblemSolutions {
 
         for (int i = 0; i < n - 1; i++) {
 
-            // YOU CODE GOES HERE -- COMPLETE THE INNER LOOP OF THIS
-            // "SELECTION SORT" ALGORITHM.
-            // DO NOT FORGET TO ADD YOUR NAME / SECTION ABOVE
+            int idx = i;
+            for (int j = i + 1; j < n; j++){
+                if ((ascending && values[j] < values[idx]) || (!ascending && values[j] > values[idx])){
+                    idx = j;
+                }
+            }
+            int temp = values[i];
+            values[i] = values[idx];
+            values[idx] = temp;
 
         }
 
@@ -102,8 +108,28 @@ public class ProblemSolutions {
         // TO CODE WITH A SPACE COMPLEXITY OF O(N LOG N), WHICH IS FINE FOR PURPOSES
         // OF THIS PROGRAMMING EXERCISES.
 
-        return;
+        int[] merged = new int[right - left + 1];
+        int i = left, j = mid + 1, index = 0;
 
+        while (i <= mid && j <= right) {
+            boolean leftDiv = arr[i] % k == 0;
+            boolean rightDiv = arr[j] % k == 0;
+
+            if (leftDiv && rightDiv) {
+                merged[index++] = arr[i] <= arr[j] ? arr[i++] : arr[j++];
+            } else if (leftDiv) {
+                merged[index++] = arr[i++];
+            } else if (rightDiv) {
+                merged[index++] = arr[j++];
+            } else {
+                merged[index++] = arr[i] <= arr[j] ? arr[i++] : arr[j++];
+            }
+        }
+
+        while (i <= mid) merged[index++] = arr[i++];
+        while (j <= right) merged[index++] = arr[j++];
+
+        System.arraycopy(merged, 0, arr, left, merged.length);
     }
 
 
@@ -154,9 +180,17 @@ public class ProblemSolutions {
 
     public static boolean asteroidsDestroyed(int mass, int[] asteroids) {
 
-        // YOUR CODE GOES HERE, CONSIDER USING ARRAYS.SORT()
+        Arrays.sort(asteroids);
+        long currMass = mass;
+        for (int asteroid : asteroids){
+            if (currMass >= asteroid){
+                currMass += asteroid;
+            } else {
+                return false;
+            }
+        }
 
-        return false;
+        return true;
 
     }
 
@@ -192,9 +226,20 @@ public class ProblemSolutions {
 
     public static int numRescueSleds(int[] people, int limit) {
 
-        // YOUR CODE GOES HERE, CONSIDER USING ARRAYS.SORT
+        Arrays.sort(people);
+        int sleds = 0;
+        int i = 0, j = people.length - 1;
 
-        return -1;
+        while (i <= j){
+            if (people[i] + people[j] <= limit) {
+                i++;
+                
+            }
+            j--;
+            sleds++;
+        }
+
+        return sleds;
 
     }
 
