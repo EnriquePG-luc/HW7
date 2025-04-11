@@ -108,28 +108,58 @@ public class ProblemSolutions {
         // TO CODE WITH A SPACE COMPLEXITY OF O(N LOG N), WHICH IS FINE FOR PURPOSES
         // OF THIS PROGRAMMING EXERCISES.
 
-        int[] merged = new int[right - left + 1];
-        int i = left, j = mid + 1, index = 0;
+        int[] temp = new int[right - left + 1];
+        int i = left;
+        int j = mid + 1;
+        int index = 0;
 
         while (i <= mid && j <= right) {
-            boolean leftDiv = arr[i] % k == 0;
-            boolean rightDiv = arr[j] % k == 0;
+            boolean iDiv = arr[i] % k == 0;
+            boolean jDiv = arr[j] % k == 0;
 
-            if (leftDiv && rightDiv) {
-                merged[index++] = arr[i] <= arr[j] ? arr[i++] : arr[j++];
-            } else if (leftDiv) {
-                merged[index++] = arr[i++];
-            } else if (rightDiv) {
-                merged[index++] = arr[j++];
+            if (iDiv && jDiv) {
+                temp[index++] = arr[i++];
+            } else if (iDiv) {
+                temp[index++] = arr[i++];
+            } else if (jDiv) {
+                temp[index++] = arr[j++];
             } else {
-                merged[index++] = arr[i] <= arr[j] ? arr[i++] : arr[j++];
+                break; 
             }
         }
 
-        while (i <= mid) merged[index++] = arr[i++];
-        while (j <= right) merged[index++] = arr[j++];
+        
+        while (i <= mid && arr[i] % k == 0) {
+            temp[index++] = arr[i++];
+        }
 
-        System.arraycopy(merged, 0, arr, left, merged.length);
+        
+        while (j <= right && arr[j] % k == 0) {
+            temp[index++] = arr[j++];
+        }
+
+        
+        while (i <= mid && j <= right) {
+            if (arr[i] <= arr[j]) {
+                temp[index++] = arr[i++];
+            } else {
+                temp[index++] = arr[j++];
+            }
+        }
+
+        
+        while (i <= mid) {
+            temp[index++] = arr[i++];
+        }
+        while (j <= right) {
+            temp[index++] = arr[j++];
+        }
+
+        
+        for (int x = 0; x < temp.length; x++) {
+            arr[left + x] = temp[x];
+        }
+        return;
     }
 
 
